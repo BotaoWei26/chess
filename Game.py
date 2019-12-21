@@ -30,6 +30,7 @@ class Game:
         self.turn = 'w'
         self.current_piece = None
         self.green_moves = []
+        self.red_moves = []
 
     def toggle_turn(self):
         if self.turn == 'b':
@@ -43,6 +44,7 @@ class Game:
             if ([piece.row, piece.col] == [row, col]) and (piece.color == self.turn):
                 self.current_piece = piece
                 self.green_moves = piece.green_moves(self.pieces)
+                self.red_moves = piece.red_moves(self.pieces)
                 break
         return self.current_piece is not None
 
@@ -52,5 +54,14 @@ class Game:
             self.toggle_turn()
             self.current_piece = None
             self.green_moves = []
+            self.red_moves = []
+            return True
+        elif [row, col] in self.red_moves:
+            self.pieces = [piece for piece in self.pieces if [piece.row, piece.col] != [row, col]]
+            self.current_piece.move(row, col)
+            self.toggle_turn()
+            self.current_piece = None
+            self.green_moves = []
+            self.red_moves = []
             return True
         return False
