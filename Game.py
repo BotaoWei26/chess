@@ -5,6 +5,7 @@ from Bishop import *
 from Queen import *
 from King import *
 
+
 class Game:
     def __init__(self):
         self.pieces = []
@@ -25,3 +26,31 @@ class Game:
         self.pieces.append(Queen(7, 3, 'w'))
         self.pieces.append(King(0, 4, 'b'))
         self.pieces.append(King(7, 4, 'w'))
+
+        self.turn = 'w'
+        self.current_piece = None
+        self.green_moves = []
+
+    def toggle_turn(self):
+        if self.turn == 'b':
+            self.turn = 'w'
+        elif self.turn == 'w':
+            self.turn = 'b'
+
+    def pick(self, row, col):
+        self.current_piece = None
+        for piece in self.pieces:
+            if ([piece.row, piece.col] == [row, col]) and (piece.color == self.turn):
+                self.current_piece = piece
+                self.green_moves = piece.green_moves(self.pieces)
+                break
+        return self.current_piece is not None
+
+    def move(self, row, col):
+        if [row, col] in self.green_moves:
+            self.current_piece.move(row, col)
+            self.toggle_turn()
+            self.current_piece = None
+            self.green_moves = []
+            return True
+        return False
