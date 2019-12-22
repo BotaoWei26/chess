@@ -11,18 +11,19 @@ class Rook(Piece):
         for i in range(8):
             moves.append([self.row, i])
             moves.append([i, self.col])
-
-
+        moves = list(filter(lambda x: x != [self.row, self.col], moves))
+        moves = list(filter(lambda x: not detect_collision(x, pieces), moves))
+        moves = list(filter(lambda x: (not detect_block(x, [self.row, self.col], pieces, True, False)) and
+                                      (not detect_block(x, [self.row, self.col], pieces, False, True)), moves))
+        return moves
 
     def red_moves(self, pieces):
-        return []
-        """
         moves = []
-        if self.color == "b":
-            moves.append([self.row + 1, self.col - 1])
-            moves.append([self.row + 1, self.col + 1])
-        elif self.color == "w":
-            moves.append([self.row - 1, self.col - 1])
-            moves.append([self.row - 1, self.col + 1])
-        return list(filter(lambda x: detect_collision(x, pieces, self.color), moves))
-        """
+        for i in range(8):
+            moves.append([self.row, i])
+            moves.append([i, self.col])
+        moves = list(filter(lambda x: x != [self.row, self.col], moves))
+        moves = list(filter(lambda x: detect_collision(x, pieces, self.color), moves))
+        moves = list(filter(lambda x: (not detect_block(x, [self.row, self.col], pieces, True, False)) and
+                                      (not detect_block(x, [self.row, self.col], pieces, False, True)), moves))
+        return moves
