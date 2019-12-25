@@ -15,7 +15,7 @@ class Pawn(Piece):
             moves.append([self.row - 1, self.col])
             if self.row == 6:
                 moves.append([self.row - 2, self.col])
-        return list(filter(lambda x: not detect_collision(x, pieces) and detect_off(x), moves))
+        return list(filter(lambda x: not detect_collision(x, pieces) and not detect_off(x), moves))
 
     def red_moves(self, pieces):
         moves = []
