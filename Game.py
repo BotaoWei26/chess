@@ -31,12 +31,19 @@ class Game:
         self.current_piece = None
         self.green_moves = []
         self.red_moves = []
+        self.turn_type = 'pick'
 
     def toggle_turn(self):
         if self.turn == 'b':
             self.turn = 'w'
         elif self.turn == 'w':
             self.turn = 'b'
+
+    def click(self, row, col):
+        if self.turn_type == 'pick':
+            self.turn_type = self.pick(row, col)
+        elif self.turn_type == 'move':
+            self.turn_type = self.move(row, col)
 
     def pick(self, row, col):
         self.current_piece = None
@@ -46,22 +53,22 @@ class Game:
                 self.green_moves = piece.green_moves(self.pieces)
                 self.red_moves = piece.red_moves(self.pieces)
                 break
-        return self.current_piece is not None
+        if self.current_piece is None:
+            return "pick"
+        else:
+            return "move"
 
     def move(self, row, col):
         if [row, col] in self.green_moves:
             self.current_piece.move(row, col)
             self.toggle_turn()
-            self.current_piece = None
-            self.green_moves = []
-            self.red_moves = []
-            return True
+
         elif [row, col] in self.red_moves:
             self.pieces = [piece for piece in self.pieces if [piece.row, piece.col] != [row, col]]
             self.current_piece.move(row, col)
             self.toggle_turn()
-            self.current_piece = None
-            self.green_moves = []
-            self.red_moves = []
-            return True
-        return False
+
+        self.current_piece = None
+        self.green_moves = []
+        self.red_moves = []
+        return "pick"

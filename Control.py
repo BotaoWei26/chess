@@ -6,7 +6,7 @@ from cordDictionary import *
 class Control:
     def __init__(self):
         self.game = Game()
-        self.display = TextDisplay(self.game)
+        self.display = GraphicsDisplay(self.game)
 
     def read_line(self, read):
         read = read.split()

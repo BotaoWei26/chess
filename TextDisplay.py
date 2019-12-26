@@ -18,7 +18,7 @@ class TextDisplay:
             self.grid[self.selected.row][self.selected.col] = self.grid[self.selected.row][self.selected.col].upper()
 
         for move in self.game.green_moves:
-            self.grid[move[0]][move[1]] = '**'
+            self.grid[move[0]][move[1]] = '*' + piece.piece_type
 
         for move in self.game.red_moves:
             self.grid[move[0]][move[1]] = '##'
