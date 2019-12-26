@@ -92,3 +92,6 @@ class Bishop(Piece):
             else:
                 counter += 1
         return moves
+
+    def special_moves(self, pieces):
+        return [[None]]

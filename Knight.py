@@ -20,3 +20,6 @@ class Knight(Piece):
                 if (i + j) % 2 != 0:
                     moves.append([self.row + i, self.col + j])
         return list(filter(lambda x: detect_collision(x, pieces, self.color), moves))
+
+    def special_moves(self, pieces):
+        return [[None]]

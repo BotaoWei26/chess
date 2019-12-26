@@ -30,6 +30,14 @@ class Display:
         if self.selected is not None:
             self.board_colors[self.selected.row][self.selected.col] = 'lawn green'
 
+        for move in self.game.special_moves:
+            if move[0] == "en_passant":
+                self.board_colors[move[1][0]][move[1][1]] = 'coral'
+                self.board_colors[move[2][0]][move[2][1]] = 'tomato'
+            if move[0] == "castling":
+                self.board_colors[move[1][0]][move[1][1]] = 'coral'
+                self.board_colors[move[2][0]][move[2][1]] = 'yellow2'
+
     def pieces(self):
         return self.grid
 

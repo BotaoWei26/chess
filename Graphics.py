@@ -38,4 +38,3 @@ class Graphics:
         self.display.update()
         self.draw_board()
 
-Graphics()

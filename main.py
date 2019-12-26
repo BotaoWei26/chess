@@ -1,5 +1,3 @@
-from Control import *
+from Graphics import *
 
-c = Control()
-while True:
-    c.read_line(input())
+Graphics()

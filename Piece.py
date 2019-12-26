@@ -4,10 +4,17 @@ class Piece:
         self.col = col
         self.color = color
         self.piece_type = piece_type
+        self.passable = False
+        self.first_move = True
 
     def move(self, row, col):
         self.row = row
         self.col = col
+        self.first_move = False
+
+
+    def reset(self):
+        self.passable = False
 
 
 def detect_collision(move, pieces, color="none"):

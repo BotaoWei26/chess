@@ -31,6 +31,14 @@ class Game:
         self.current_piece = None
         self.green_moves = []
         self.red_moves = []
+        self.special_moves = [[None]]
+        self.turn_type = 'pick'
+
+    def reset(self):
+        self.current_piece = None
+        self.green_moves = []
+        self.red_moves = []
+        self.special_moves = [[None]]
         self.turn_type = 'pick'
 
     def toggle_turn(self):
@@ -41,9 +49,9 @@ class Game:
 
     def click(self, row, col):
         if self.turn_type == 'pick':
-            self.turn_type = self.pick(row, col)
+            self.pick(row, col)
         elif self.turn_type == 'move':
-            self.turn_type = self.move(row, col)
+            self.move(row, col)
 
     def pick(self, row, col):
         self.current_piece = None
@@ -52,23 +60,40 @@ class Game:
                 self.current_piece = piece
                 self.green_moves = piece.green_moves(self.pieces)
                 self.red_moves = piece.red_moves(self.pieces)
+                self.special_moves = piece.special_moves(self.pieces)
                 break
         if self.current_piece is None:
-            return "pick"
+            self.turn_type = 'pick'
         else:
-            return "move"
+            self.turn_type = 'move'
 
     def move(self, row, col):
         if [row, col] in self.green_moves:
+            for piece in self.pieces:
+                piece.reset()
             self.current_piece.move(row, col)
             self.toggle_turn()
 
         elif [row, col] in self.red_moves:
+            for piece in self.pieces:
+                piece.reset()
             self.pieces = [piece for piece in self.pieces if [piece.row, piece.col] != [row, col]]
             self.current_piece.move(row, col)
             self.toggle_turn()
 
-        self.current_piece = None
-        self.green_moves = []
-        self.red_moves = []
-        return "pick"
+        for move in self.special_moves:
+            if move[0] == 'en_passant' and (move[1] == [row, col] or move[2] == [row, col]):
+                for piece in self.pieces:
+                    piece.reset()
+                self.pieces = [piece for piece in self.pieces if [piece.row, piece.col] != move[2]]
+                self.current_piece.move(move[1][0], move[1][1])
+                self.toggle_turn()
+            elif move[0] == 'castling' and (move[1] == [row, col] or move[2] == [row, col]):
+                for piece in self.pieces:
+                    piece.reset()
+                    if piece.row == move[3][0] and piece.col == move[3][1]:
+                        piece.move(move[2][0], move[2][1])
+                self.current_piece.move(move[1][0], move[1][1])
+                self.toggle_turn()
+
+        self.reset()
