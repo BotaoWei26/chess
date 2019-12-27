@@ -20,7 +20,6 @@ class Piece:
 
     def check_check(self, pieces):
         return False
-        #override this in King
 
 
 def detect_collision(move, pieces, color="none"):
