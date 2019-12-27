@@ -5,7 +5,7 @@ class Bishop(Piece):
     def __init__(self, row, col, color):
         Piece.__init__(self, row, col, color, 'b')
 
-    def green_moves(self, pieces):
+    def green_moves(self, pieces, real=False):
         moves = []
         #up_right
         counter = 1
@@ -43,9 +43,12 @@ class Bishop(Piece):
                 counter += 1
             else:
                 break
+
+        if real:
+            moves = list(filter(lambda x: not check_check_all(pieces, self.color, x, self), moves))
         return moves
 
-    def red_moves(self, pieces):
+    def red_moves(self, pieces, real=False):
         moves = []
         #up_right
         counter = 1
@@ -91,7 +94,10 @@ class Bishop(Piece):
                 break
             else:
                 counter += 1
+
+        if real:
+            moves = list(filter(lambda x: not check_check_all(pieces, self.color, x, self, x), moves))
         return moves
 
-    def special_moves(self, pieces):
+    def special_moves(self, pieces, real=False):
         return [[None]]

@@ -4,6 +4,7 @@ from Knight import *
 from Bishop import *
 from Queen import *
 from King import *
+from copy import deepcopy
 
 
 class Game:
@@ -58,9 +59,9 @@ class Game:
         for piece in self.pieces:
             if ([piece.row, piece.col] == [row, col]) and (piece.color == self.turn):
                 self.current_piece = piece
-                self.green_moves = piece.green_moves(self.pieces)
-                self.red_moves = piece.red_moves(self.pieces)
-                self.special_moves = piece.special_moves(self.pieces)
+                self.green_moves = piece.green_moves(self.pieces, True)
+                self.red_moves = piece.red_moves(self.pieces, True)
+                self.special_moves = piece.special_moves(self.pieces, True)
                 break
         if self.current_piece is None:
             self.turn_type = 'pick'

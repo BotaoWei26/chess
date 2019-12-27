@@ -32,8 +32,8 @@ class Display:
 
         for move in self.game.special_moves:
             if move[0] == "en_passant":
-                self.board_colors[move[1][0]][move[1][1]] = 'coral'
-                self.board_colors[move[2][0]][move[2][1]] = 'tomato'
+                self.board_colors[move[1][0]][move[1][1]] = 'OliveDrab3'
+                self.board_colors[move[2][0]][move[2][1]] = 'firebrick3'
             if move[0] == "castling":
                 self.board_colors[move[1][0]][move[1][1]] = 'coral'
                 self.board_colors[move[2][0]][move[2][1]] = 'yellow2'
