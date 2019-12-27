@@ -1,4 +1,5 @@
 from Piece import *
+from boardFunctions import *
 
 
 class Knight(Piece):
@@ -28,4 +29,4 @@ class Knight(Piece):
         return moves
 
     def special_moves(self, pieces, real=False):
-        return [[None]]
+        return []

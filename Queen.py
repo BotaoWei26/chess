@@ -1,4 +1,5 @@
 from Piece import *
+from boardFunctions import *
 
 
 class Queen(Piece):
@@ -180,4 +181,4 @@ class Queen(Piece):
         return moves
 
     def special_moves(self, pieces, real=False):
-        return [[None]]
+        return []

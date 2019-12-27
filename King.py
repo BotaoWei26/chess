@@ -1,4 +1,6 @@
 from Piece import *
+from boardFunctions import *
+
 
 class King(Piece):
     def __init__(self, row, col, color):
@@ -53,10 +55,7 @@ class King(Piece):
                     moves.append(["castling", [7, 6], [7, 5], [piece.row, piece.col]])
         if real:
             moves = list(filter(lambda x: not check_check_all(pieces, self.color, x[1], self), moves))
-        if moves != []:
-            return moves
-        else:
-            return [[None]]
+        return moves
 
     def check_check(self, pieces):
         red_moves = []

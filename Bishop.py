@@ -1,4 +1,5 @@
 from Piece import *
+from boardFunctions import *
 
 
 class Bishop(Piece):
@@ -100,4 +101,4 @@ class Bishop(Piece):
         return moves
 
     def special_moves(self, pieces, real=False):
-        return [[None]]
+        return []

@@ -1,5 +1,6 @@
 from Piece import *
-from functools import reduce
+from boardFunctions import *
+
 
 
 class Rook(Piece):
@@ -101,4 +102,4 @@ class Rook(Piece):
         return moves
 
     def special_moves(self, pieces, real=False):
-        return [[None]]
+        return []

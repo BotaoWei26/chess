@@ -1,4 +1,5 @@
 from Piece import *
+from boardFunctions import *
 
 
 class Pawn(Piece):
@@ -51,7 +52,4 @@ class Pawn(Piece):
                     moves.append(["en_passant", [piece.row-1, piece.col], [piece.row, piece.col]])
         if real:
             moves = list(filter(lambda x: not check_check_all(pieces, self.color, x[1], self, x[2]), moves))
-        if moves != []:
-            return moves
-        else:
-            return [[None]]
+        return moves

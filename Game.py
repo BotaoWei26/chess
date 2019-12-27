@@ -4,7 +4,7 @@ from Knight import *
 from Bishop import *
 from Queen import *
 from King import *
-from copy import deepcopy
+from boardFunctions import *
 
 
 class Game:
@@ -25,8 +25,10 @@ class Game:
             self.pieces.append(Bishop(7, col, 'w'))
         self.pieces.append(Queen(0, 3, 'b'))
         self.pieces.append(Queen(7, 3, 'w'))
-        self.pieces.append(King(0, 4, 'b'))
-        self.pieces.append(King(7, 4, 'w'))
+        self.w_king = King(0, 4, 'b')
+        self.pieces.append(self.w_king)
+        self.b_king = King(7, 4, 'w')
+        self.pieces.append(self.b_king)
 
         self.turn = 'w'
         self.current_piece = None
@@ -35,11 +37,28 @@ class Game:
         self.special_moves = [[None]]
         self.turn_type = 'pick'
 
+    def check_game_over(self):
+        check = check_check_all(self.pieces, self.turn, [], self.w_king if self.turn == 'w' else self.b_king)
+        moves = []
+        for piece in filter(lambda x: x.color == self.turn, self.pieces):
+            moves.extend(piece.green_moves(self.pieces, True))
+            moves.extend(piece.red_moves(self.pieces, True))
+            moves.extend(piece.special_moves(self.pieces, True))
+        no_moves = len(moves) == 0
+        if check and no_moves:
+            return "checkmate"
+        elif check:
+            return "check"
+        elif no_moves:
+            return "stalemate"
+        else:
+            return "nothing"
+
     def reset(self):
         self.current_piece = None
         self.green_moves = []
         self.red_moves = []
-        self.special_moves = [[None]]
+        self.special_moves = []
         self.turn_type = 'pick'
 
     def toggle_turn(self):
@@ -53,6 +72,7 @@ class Game:
             self.pick(row, col)
         elif self.turn_type == 'move':
             self.move(row, col)
+            print(self.check_game_over())
 
     def pick(self, row, col):
         self.current_piece = None
