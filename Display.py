@@ -37,6 +37,8 @@ class Display:
             if move[0] == "castling":
                 self.board_colors[move[1][0]][move[1][1]] = 'coral'
                 self.board_colors[move[2][0]][move[2][1]] = 'yellow2'
+            if move[0] == "passed_pawn":
+                self.board_colors[move[1][0]][move[1][1]] = 'gold'
 
     def pieces(self):
         return self.grid

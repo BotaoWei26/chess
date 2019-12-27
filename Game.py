@@ -72,7 +72,6 @@ class Game:
             self.pick(row, col)
         elif self.turn_type == 'move':
             self.move(row, col)
-            print(self.check_game_over())
 
     def pick(self, row, col):
         self.current_piece = None
@@ -116,5 +115,10 @@ class Game:
                         piece.move(move[2][0], move[2][1])
                 self.current_piece.move(move[1][0], move[1][1])
                 self.toggle_turn()
-
+            elif move[0] == 'passed_pawn' and move[1] == [row, col]:
+                for piece in self.pieces:
+                    piece.reset()
+                self.pieces = [piece for piece in self.pieces if ([piece.row, piece.col] != move[1] and [piece.row, piece.col] != move[2])]
+                self.pieces.append(Queen(move[1][0], move[1][1], self.turn))
+                self.toggle_turn()
         self.reset()
