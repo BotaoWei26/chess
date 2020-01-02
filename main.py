@@ -1,3 +1,6 @@
 from Graphics import *
+from tkinter import *
 
-Graphics()
+root = Tk()
+g = Graphics(root, 75)
+root.mainloop()

@@ -4,10 +4,10 @@ from Display import *
 
 
 class Graphics:
-    def __init__(self):
+    def __init__(self, window, ts):
 
-        self.ts = 64
-        self.window = Tk()
+        self.ts = ts
+        self.window = window
         self.game = Game()
         self.display = Display(self.game)
 
@@ -38,11 +38,24 @@ class Graphics:
         self.blank_sprite = PhotoImage(file="sprites/blank.gif")
 
         self.window.title("Chess")
-        self.window.geometry(str(self.ts * 12) + "x" + str(self.ts * 12))
+        self.window.geometry(str(self.ts * 11) + "x" + str(self.ts * 11))
 
-        self.draw_board()
+        self.top_boarder = Label(self.window, bd=0, height=self.ts*1.5, width=self.ts*11, image=self.board_sprite_dict[self.game.turn], bg='white')
+        self.top_boarder.grid(row=0, column=0, rowspan=2, columnspan=12)
+        self.bottom_boarder = Label(self.window, bd=0, height=self.ts*1.5, width=self.ts*11, image=self.board_sprite_dict[self.game.check_game_over()], bg='white')
+        self.bottom_boarder.grid(row=10, column=0, rowspan=2, columnspan=12)
+        self.left_boarder = Label(self.window, bd=0, height=self.ts*8, width=self.ts*1.5, image=self.blank_sprite, bg='white')
+        self.left_boarder.grid(row=2, column=0, rowspan=8, columnspan=2)
+        self.right_boarder = Label(self.window, bd=0, height=self.ts*8, width=self.ts*1.5, image=self.blank_sprite, bg='white')
+        self.right_boarder.grid(row=2, column=10, rowspan=8, columnspan=2)
 
-        self.window.mainloop()
+        self.tiles = [[None for j in range(8)] for i in range(8)]
+        for i in range(8):
+            for j in range(8):
+                sprite = self.piece_sprite(self.display.pieces()[i][j][0], self.display.pieces()[i][j][1])
+                self.tiles[i][j] = Label(self.window, bd=0, height=self.ts, width=self.ts, image=sprite, bg=self.display.get_colors()[i][j])
+                self.tiles[i][j].grid(row=i+2, column=j+2)
+                self.tiles[i][j].bind('<Button-1>', self.click(i, j))
 
     def piece_sprite(self, color, piece_type):
         if color == "w":
@@ -53,23 +66,13 @@ class Graphics:
             return self.blank_sprite
 
     def draw_board(self):
-        tiles = [[None for j in range(8)] for i in range(8)]
-
-        top_boarder = Label(self.window, bd=0, height=self.ts*2, width=self.ts*12, image=self.board_sprite_dict[self.game.turn], bg='white')
-        top_boarder.grid(row=0, column=0, rowspan=2, columnspan=12)
-        bottom_boarder = Label(self.window, bd=0, height=self.ts*2, width=self.ts*12, image=self.board_sprite_dict[self.game.check_game_over()], bg='white')
-        bottom_boarder.grid(row=10, column=0, rowspan=2, columnspan=12)
-        left_boarder = Label(self.window, bd=0, height=self.ts*8, width=self.ts*2, image=self.blank_sprite, bg='white')
-        left_boarder.grid(row=2, column=0, rowspan=8, columnspan=2)
-        right_boarder = Label(self.window, bd=0, height=self.ts*8, width=self.ts*2, image=self.blank_sprite, bg='white')
-        right_boarder.grid(row=2, column=10, rowspan=8, columnspan=2)
+        self.top_boarder.config(image=self.board_sprite_dict[self.game.turn])
+        self.bottom_boarder.config(image=self.board_sprite_dict[self.game.check_game_over()])
 
         for i in range(8):
             for j in range(8):
                 sprite = self.piece_sprite(self.display.pieces()[i][j][0], self.display.pieces()[i][j][1])
-                tiles[i][j] = Label(self.window, bd=0, height=self.ts, width=self.ts, image=sprite, bg=self.display.get_colors()[i][j])
-                tiles[i][j].grid(row=i+2, column=j+2)
-                tiles[i][j].bind('<Button-1>', self.click(i, j))
+                self.tiles[i][j].config(image=sprite, bg=self.display.get_colors()[i][j])
 
     def click(self, x, y):
         return lambda event: self.run(x, y)
