@@ -1,7 +1,6 @@
 from tkinter import *
-from Game import *
-from Display import *
-
+from Game import Game
+from Display import Display
 
 class Graphics:
     def __init__(self, window, ts):

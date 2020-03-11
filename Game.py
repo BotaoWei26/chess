@@ -67,11 +67,18 @@ class Game:
         elif self.turn == 'w':
             self.turn = 'b'
 
-    def click(self, row, col):
+    def click(self, row, col, color=None):
+        if color is not None and color != self.turn:
+            return self.turn
+
         if self.turn_type == 'pick':
-            self.pick(row, col)
+            return "pick", self.pick(row, col)
         elif self.turn_type == 'move':
-            self.move(row, col)
+            move = self.move(row, col)
+            if move is not None:
+                return "move", move
+            else:
+                self.reset()
 
     def pick(self, row, col):
         self.current_piece = None
@@ -86,6 +93,7 @@ class Game:
             self.turn_type = 'pick'
         else:
             self.turn_type = 'move'
+            return tuple((row, col))
 
     def move(self, row, col):
         if [row, col] in self.green_moves:
@@ -93,6 +101,8 @@ class Game:
                 piece.reset()
             self.current_piece.move(row, col)
             self.toggle_turn()
+            self.reset()
+            return tuple((row, col))
 
         elif [row, col] in self.red_moves:
             for piece in self.pieces:
@@ -100,6 +110,8 @@ class Game:
             self.pieces = [piece for piece in self.pieces if [piece.row, piece.col] != [row, col]]
             self.current_piece.move(row, col)
             self.toggle_turn()
+            self.reset()
+            return tuple((row, col))
 
         for move in self.special_moves:
             if move[0] == 'en_passant' and (move[1] == [row, col] or move[2] == [row, col]):
@@ -108,6 +120,8 @@ class Game:
                 self.pieces = [piece for piece in self.pieces if [piece.row, piece.col] != move[2]]
                 self.current_piece.move(move[1][0], move[1][1])
                 self.toggle_turn()
+                self.reset()
+                return tuple((row, col))
             elif move[0] == 'castling' and (move[1] == [row, col] or move[2] == [row, col]):
                 for piece in self.pieces:
                     piece.reset()
@@ -115,6 +129,8 @@ class Game:
                         piece.move(move[2][0], move[2][1])
                 self.current_piece.move(move[1][0], move[1][1])
                 self.toggle_turn()
+                self.reset()
+                return tuple((row, col))
             elif move[0] == 'passed_pawn' and move[1] == [row, col]:
                 for piece in self.pieces:
                     piece.reset()
@@ -131,4 +147,5 @@ class Game:
                     self.pieces.append(Bishop(move[1][0], move[1][1], self.turn))"""
                 self.pieces.append(Queen(move[1][0], move[1][1], self.turn))
                 self.toggle_turn()
-        self.reset()
+                self.reset()
+                return tuple((row, col))
