@@ -1,11 +1,11 @@
-from Pawn import *
-from Rook import *
-from Knight import *
-from Bishop import *
-from Queen import *
-from King import *
+from Pawn import Pawn
+from Rook import Rook
+from Knight import Knight
+from Bishop import Bishop
+from Queen import Queen
+from King import King
 from boardFunctions import *
-
+from PromotionScreen import PromotionScreen
 
 class Game:
     def __init__(self):
@@ -119,6 +119,16 @@ class Game:
                 for piece in self.pieces:
                     piece.reset()
                 self.pieces = [piece for piece in self.pieces if ([piece.row, piece.col] != move[1] and [piece.row, piece.col] != move[2])]
+
+                """ps = PromotionScreen()
+                if ps.get() == "queen":
+                    self.pieces.append(Queen(move[1][0], move[1][1], self.turn))
+                elif ps.get() == "knight":
+                    self.pieces.append(Knight(move[1][0], move[1][1], self.turn))
+                elif ps.get() == "rook":
+                    self.pieces.append(Rook(move[1][0], move[1][1], self.turn))
+                elif ps.get() == "bishop":
+                    self.pieces.append(Bishop(move[1][0], move[1][1], self.turn))"""
                 self.pieces.append(Queen(move[1][0], move[1][1], self.turn))
                 self.toggle_turn()
         self.reset()
