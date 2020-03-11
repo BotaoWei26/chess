@@ -18,7 +18,8 @@ class Rook(Piece):
             move = position_function(counter)
             while (not detect_off(move)) and not (detect_collision(move, pieces)): # not off board and not on another piece
                 moves.append(move)
-                move = position_function(++counter)
+                counter += 1
+                move = position_function(counter)
         #stops recursive loop in check?
         if real:
             moves = list(filter(lambda x: not check_check_all(pieces, self.color, x, self), moves))
@@ -33,14 +34,14 @@ class Rook(Piece):
             counter = 1
             position_function = self.direction_function(direction)
             move = position_function(counter)
-            #####
             while True:
                 if detect_collision(move, pieces, self.color):
                     moves.append(move)
                     break
                 elif detect_off(move) or detect_collision(move, pieces):
                     break
-                move = position_function(++counter)
+                counter += 1
+                move = position_function(counter)
 
         if real:
             moves = list(filter(lambda x: not check_check_all(pieces, self.color, x, self, x), moves))

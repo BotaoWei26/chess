@@ -5,180 +5,47 @@ from boardFunctions import *
 class Queen(Piece):
     def __init__(self, row, col, color):
         Piece.__init__(self, row, col, color, 'q')
+        self.directions = ["up", "right", "down", "left", "up_right", "right_down", "down_left", "left_up"]
 
     def green_moves(self, pieces, real=False):
         moves = []
-        #up
-        counter = 1
-        while True:
-            move = [self.row - counter, self.col]
-            if (not detect_off(move)) and not (detect_collision(move, pieces)):
-                moves.append(move)
-                counter += 1
-            else:
-                break
-        #right
-        counter = 1
-        while True:
-            move = [self.row, self.col + counter]
-            if (not detect_off(move)) and not (detect_collision(move, pieces)):
-                moves.append(move)
-                counter += 1
-            else:
-                break
-        #down
-        counter = 1
-        while True:
-            move = [self.row + counter, self.col]
-            if (not detect_off(move)) and not (detect_collision(move, pieces)):
-                moves.append(move)
-                counter += 1
-            else:
-                break
-        #left
-        counter = 1
-        while True:
-            move = [self.row, self.col - counter]
-            if (not detect_off(move)) and not (detect_collision(move, pieces)):
-                moves.append(move)
-                counter += 1
-            else:
-                break
-        #up_right
-        counter = 1
-        while True:
-            move = [self.row - counter, self.col + counter]
-            if (not detect_off(move)) and not (detect_collision(move, pieces)):
-                moves.append(move)
-                counter += 1
-            else:
-                break
-        #right_down
-        counter = 1
-        while True:
-            move = [self.row + counter, self.col + counter]
-            if (not detect_off(move)) and not (detect_collision(move, pieces)):
-                moves.append(move)
-                counter += 1
-            else:
-                break
-        #down_left
-        counter = 1
-        while True:
-            move = [self.row + counter, self.col - counter]
-            if (not detect_off(move)) and not (detect_collision(move, pieces)):
-                moves.append(move)
-                counter += 1
-            else:
-                break
-        #left_up
-        counter = 1
-        while True:
-            move = [self.row - counter, self.col - counter]
-            if (not detect_off(move)) and not (detect_collision(move, pieces)):
-                moves.append(move)
-                counter += 1
-            else:
-                break
 
+        #checks all directions
+        for direction in self.directions:
+            counter = 1
+            position_function = self.direction_function(direction)
+            move = position_function(counter)
+            while (not detect_off(move)) and not (detect_collision(move, pieces)): # not off board and not on another piece
+                moves.append(move)
+                counter += 1
+                move = position_function(counter)
+        #stops recursive loop in check?
         if real:
             moves = list(filter(lambda x: not check_check_all(pieces, self.color, x, self), moves))
+
         return moves
 
     def red_moves(self, pieces, real=False):
         moves = []
-        #up
-        counter = 1
-        while True:
-            move = [self.row - counter, self.col]
-            if detect_collision(move, pieces, self.color):
-                moves.append(move)
-                break
-            elif detect_off(move) or detect_collision(move, pieces):
-                break
-            else:
+
+        #checks all directions
+        for direction in self.directions:
+            counter = 1
+            position_function = self.direction_function(direction)
+            move = position_function(counter)
+            while True:
+                if detect_collision(move, pieces, self.color):
+                    moves.append(move)
+                    break
+                elif detect_off(move) or detect_collision(move, pieces):
+                    break
                 counter += 1
-        #right
-        counter = 1
-        while True:
-            move = [self.row, self.col + counter]
-            if detect_collision(move, pieces, self.color):
-                moves.append(move)
-                break
-            elif detect_off(move) or detect_collision(move, pieces):
-                break
-            else:
-                counter += 1
-        #down
-        counter = 1
-        while True:
-            move = [self.row + counter, self.col]
-            if detect_collision(move, pieces, self.color):
-                moves.append(move)
-                break
-            elif detect_off(move) or detect_collision(move, pieces):
-                break
-            else:
-                counter += 1
-        #left
-        counter = 1
-        while True:
-            move = [self.row, self.col - counter]
-            if detect_collision(move, pieces, self.color):
-                moves.append(move)
-                break
-            elif detect_off(move) or detect_collision(move, pieces):
-                break
-            else:
-                counter += 1
-        #up_right
-        counter = 1
-        while True:
-            move = [self.row - counter, self.col + counter]
-            if detect_collision(move, pieces, self.color):
-                moves.append(move)
-                break
-            elif detect_off(move) or detect_collision(move, pieces):
-                break
-            else:
-                counter += 1
-        #right_down
-        counter = 1
-        while True:
-            move = [self.row + counter, self.col + counter]
-            if detect_collision(move, pieces, self.color):
-                moves.append(move)
-                break
-            elif detect_off(move) or detect_collision(move, pieces):
-                break
-            else:
-                counter += 1
-        #down_left
-        counter = 1
-        while True:
-            move = [self.row + counter, self.col - counter]
-            if detect_collision(move, pieces, self.color):
-                moves.append(move)
-                break
-            elif detect_off(move) or detect_collision(move, pieces):
-                break
-            else:
-                counter += 1
-        #left_up
-        counter = 1
-        while True:
-            move = [self.row - counter, self.col - counter]
-            if detect_collision(move, pieces, self.color):
-                moves.append(move)
-                break
-            elif detect_off(move) or detect_collision(move, pieces):
-                break
-            else:
-                counter += 1
+                move = position_function(counter)
 
         if real:
             moves = list(filter(lambda x: not check_check_all(pieces, self.color, x, self, x), moves))
         return moves
+
 
     def special_moves(self, pieces, real=False):
         return []

@@ -30,3 +30,12 @@ class Piece:
             return lambda c: [self.row + c, self.col]
         elif direction == "left":
             return lambda c: [self.row, self.col - c]
+
+        elif direction == "up_right":
+            return lambda c: [self.row - c, self.col + c]
+        elif direction == "right_down":
+            return lambda c: [self.row + c, self.col + c]
+        elif direction == "down_left":
+            return lambda c: [self.row + c, self.col - c]
+        elif direction == "left_up":
+            return lambda c: [self.row - c, self.col - c]
