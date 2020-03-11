@@ -21,4 +21,12 @@ class Piece:
     def check_check(self, pieces):
         return False
 
-
+    def direction_function(self, direction):
+        if direction == "up":
+            return lambda c: [self.row - c, self.col]
+        elif direction == "right":
+            return lambda c: [self.row, self.col + c]
+        elif direction == "down":
+            return lambda c: [self.row + c, self.col]
+        elif direction == "left":
+            return lambda c: [self.row, self.col - c]

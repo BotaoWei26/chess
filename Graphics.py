@@ -40,14 +40,14 @@ class Graphics:
         self.window.title("Chess")
         self.window.geometry(str(self.ts * 11) + "x" + str(self.ts * 11))
 
-        self.top_boarder = Label(self.window, bd=0, height=self.ts*1.5, width=self.ts*11, image=self.board_sprite_dict[self.game.turn], bg='white')
+        """self.top_boarder = Label(self.window, bd=0, height=self.ts*1.5, width=self.ts*11, image=self.board_sprite_dict[self.game.turn], bg='white')
         self.top_boarder.grid(row=0, column=0, rowspan=2, columnspan=12)
         self.bottom_boarder = Label(self.window, bd=0, height=self.ts*1.5, width=self.ts*11, image=self.board_sprite_dict[self.game.check_game_over()], bg='white')
         self.bottom_boarder.grid(row=10, column=0, rowspan=2, columnspan=12)
         self.left_boarder = Label(self.window, bd=0, height=self.ts*8, width=self.ts*1.5, image=self.blank_sprite, bg='white')
         self.left_boarder.grid(row=2, column=0, rowspan=8, columnspan=2)
         self.right_boarder = Label(self.window, bd=0, height=self.ts*8, width=self.ts*1.5, image=self.blank_sprite, bg='white')
-        self.right_boarder.grid(row=2, column=10, rowspan=8, columnspan=2)
+        self.right_boarder.grid(row=2, column=10, rowspan=8, columnspan=2)"""
 
         self.tiles = [[None for j in range(8)] for i in range(8)]
         for i in range(8):
